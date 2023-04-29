@@ -30,8 +30,8 @@ namespace ShopOnline.API.Controllers
                 }
                 else
                 {
-                    var productsDtos = products.ConvertToDto(productCategories);
-                    return Ok(productsDtos);
+                    var productDtos = products.ConvertToDto(productCategories);
+                    return Ok(productDtos);
                 }
             }
             catch (Exception)
