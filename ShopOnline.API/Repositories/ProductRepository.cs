@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopOnline.API.Database;
 using ShopOnline.API.Entities;
-using ShopOnline.Models.Repositories.Contracts;
+using ShopOnline.API.Repositories.Contracts;
 
-namespace ShopOnline.Models.Repositories
+namespace ShopOnline.API.Repositories
 {
     public class ProductRepository : IProductRepository
     {
@@ -26,14 +26,18 @@ namespace ShopOnline.Models.Repositories
             return categories;
         }
 
-        public Task<Product> GetItem(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ProductCategory> GetCategory(int id)
         {
-            throw new NotImplementedException();
+            var category = await _dbContext.ProductCategories.FindAsync(id);
+
+            return category;
+        }
+
+        public async Task<Product> GetItem(int id)
+        {
+            var product = await _dbContext.Products.FindAsync(id);
+
+            return product;
         }
     }
 }

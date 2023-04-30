@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using ShopOnline.API.Database;
-using ShopOnline.Models.Repositories;
-using ShopOnline.Models.Repositories.Contracts;
+using ShopOnline.API.Repositories;
+using ShopOnline.API.Repositories.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
