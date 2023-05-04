@@ -9,7 +9,7 @@ public class ShoppingCartBase : ComponentBase
     [Inject]
     public IShoppingCartService ShoppingCartService { get; set; }
     
-    public IEnumerable<CartItemDto> ShoppingCartItems { get; set; }
+    public List<CartItemDto> ShoppingCartItems { get; set; }
     
     public string ErrorMessage { get; set; }
 
@@ -23,5 +23,24 @@ public class ShoppingCartBase : ComponentBase
         {
             ErrorMessage = ex.Message;
         }
+    }
+
+    protected async Task DeleteCartItem_Click(int id)
+    {
+        var cartItemDto = await ShoppingCartService.DeleteItem(id);
+        
+        RemoveCartItem(id);
+    }
+
+    private CartItemDto GetCartItem(int id)
+    {
+        return ShoppingCartItems.FirstOrDefault(i => i.Id == id);
+    }
+
+    private void RemoveCartItem(int id)
+    {
+        var cartItemDto = GetCartItem(id);
+
+        ShoppingCartItems.Remove(cartItemDto);
     }
 }
