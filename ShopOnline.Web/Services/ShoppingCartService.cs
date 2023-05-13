@@ -1,15 +1,15 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using ShopOnline.Models.Dtos;
 using ShopOnline.Web.Services.Contracts;
 
 namespace ShopOnline.Web.Services
 {
-    public class ShoppingCartService : IShoppingCartService
+    public class ShoppingCartService :  IShoppingCartService
     {
         private readonly HttpClient _httpClient;
+        public event Action<int> OnShoppingCartChanged;
 
         public ShoppingCartService(HttpClient httpClient)
         {
@@ -105,6 +105,14 @@ namespace ShopOnline.Web.Services
             {
                 Console.WriteLine(ex);
                 throw;
+            }
+        }
+
+        public void RaiseEventOnShoppingCartChanged(int totalQty)
+        {
+            if (OnShoppingCartChanged != null)
+            {
+                OnShoppingCartChanged.Invoke(totalQty);
             }
         }
     }

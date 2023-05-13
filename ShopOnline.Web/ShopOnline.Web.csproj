@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Shared\CartMenu.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.5" PrivateAssets="all" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -14,6 +18,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopOnline.Models\ShopOnline.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Shared\CartMenu.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Shared\CartMenu.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Shared\CartMenu.razor" />
   </ItemGroup>
 
 </Project>
