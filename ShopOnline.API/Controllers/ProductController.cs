@@ -10,7 +10,6 @@ namespace ShopOnline.API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
-
         public ProductController(IProductRepository productRepository)
         {
             this._productRepository = productRepository;
@@ -61,6 +60,41 @@ namespace ShopOnline.API.Controllers
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the database");
+            }
+        }
+        
+        [HttpGet(nameof(GetProductCategories))]
+        public async Task<ActionResult<IEnumerable<ProductCategoryDto>>> GetProductCategories()
+        {
+            try
+            {
+                var productCategories = await _productRepository.GetCategories();
+
+                var productCategoriesDtos = productCategories.ConvertToDto();
+
+                return Ok(productCategoriesDtos);
+            }
+            catch (Exception )
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data from the Database");
+            }
+        }
+
+        [Route("{categoryId}/GetItemsByCategory")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetItemsByCategory(int categoryId)
+        {
+            try
+            {
+                var products = await _productRepository.GetItemsByCategory(categoryId);
+                var productsCategories = await _productRepository.GetCategories();
+                var productsDto = products.ConvertToDto(productsCategories);
+
+                return Ok(productsDto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error Retrieving data from Database");
             }
         }
     }

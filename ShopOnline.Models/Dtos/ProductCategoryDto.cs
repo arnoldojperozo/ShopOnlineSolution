@@ -1,6 +1,6 @@
-﻿namespace ShopOnline.API.Entities
+﻿namespace ShopOnline.Models.Dtos
 {
-    public class ProductCategory
+    public class ProductCategoryDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
