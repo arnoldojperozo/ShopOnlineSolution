@@ -16,16 +16,14 @@ namespace ShopOnline.API.Extensions
                 }).ToList();
         }
 
-        public static IEnumerable<ProductDto> ConvertToDto(this IEnumerable<Product> products, IEnumerable<ProductCategory> productCategories)
+        public static IEnumerable<ProductDto> ConvertToDto(this IEnumerable<Product> products)
         {
             return (from product in products
-                join productCategory in productCategories
-                    on product.CategoryId equals productCategory.Id
                     select new ProductDto
                     {
                         Id = product.Id,
-                        CategoryId = product.CategoryId,
-                        CategoryName = productCategory.Name,
+                        CategoryId = product.ProductCategory.Id,
+                        CategoryName = product.ProductCategory.Name,
                         Description = product.Description,
                         ImageURL = product.ImageURL,
                         Name = product.Name,
@@ -34,13 +32,13 @@ namespace ShopOnline.API.Extensions
                     }).ToList();
         }
         
-        public static ProductDto ConvertToDto(this Product product, ProductCategory productCategory)
+        public static ProductDto ConvertToDto(this Product product)
         {
             return new ProductDto
             {
                 Id = product.Id,
-                CategoryId = product.CategoryId,
-                CategoryName = productCategory.Name,
+                CategoryId = product.ProductCategory.Id,
+                CategoryName = product.ProductCategory.Name,
                 Description = product.Description,
                 ImageURL = product.ImageURL,
                 Name = product.Name,

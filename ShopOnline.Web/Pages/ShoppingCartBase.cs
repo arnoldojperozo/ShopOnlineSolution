@@ -15,6 +15,9 @@ public class ShoppingCartBase : ComponentBase
     
     public List<CartItemDto> ShoppingCartItems { get; set; }
     
+    [Inject]
+    public IManageCartItemsLocalStorageService ManageCartItemsLocalStorageService { get; set; }
+    
     public string ErrorMessage { get; set; }
 
     public string TotalPrice { get; set; }
@@ -25,7 +28,7 @@ public class ShoppingCartBase : ComponentBase
     {
         try
         {
-            ShoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
+            ShoppingCartItems = await ManageCartItemsLocalStorageService.GetCollection();
             CartChanged();
         }
         catch (Exception ex)
@@ -38,7 +41,7 @@ public class ShoppingCartBase : ComponentBase
     {
         var cartItemDto = await ShoppingCartService.DeleteItem(id);
         
-        RemoveCartItem(cartItemDto.Id);
+        await RemoveCartItem(cartItemDto.Id);
 
         CartChanged();
     }
@@ -57,7 +60,7 @@ public class ShoppingCartBase : ComponentBase
 
                 var returnedUpdateItemDto = await ShoppingCartService.UpdateQty(updateItemDto);
 
-                UpdateItemTotalPrice(returnedUpdateItemDto);
+                await UpdateItemTotalPrice(returnedUpdateItemDto);
                 CartChanged();
                 await MakeUpdateQtyButtonVisible(id, false);
             }
@@ -94,14 +97,16 @@ public class ShoppingCartBase : ComponentBase
         await MakeUpdateQtyButtonVisible(id, true);
     }
 
-    private void RemoveCartItem(int id)
+    private async Task RemoveCartItem(int id)
     {
         var cartItemDto = GetCartItem(id);
 
         ShoppingCartItems.Remove(cartItemDto);
+
+        await ManageCartItemsLocalStorageService.SaveCollection(ShoppingCartItems);
     }
 
-    private void UpdateItemTotalPrice(CartItemDto cartItemDto)
+    private async Task UpdateItemTotalPrice(CartItemDto cartItemDto)
     {
         var item = GetCartItem(cartItemDto.Id);
 
@@ -109,6 +114,8 @@ public class ShoppingCartBase : ComponentBase
         {
             item.TotalPrice = cartItemDto.Price * cartItemDto.Qty;
         }
+
+        await ManageCartItemsLocalStorageService.SaveCollection(ShoppingCartItems);
     }
 
     private void CalculateCartSummaryTotals()

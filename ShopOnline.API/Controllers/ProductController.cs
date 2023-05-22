@@ -29,7 +29,7 @@ namespace ShopOnline.API.Controllers
                 }
                 else
                 {
-                    var productDtos = products.ConvertToDto(productCategories);
+                    var productDtos = products.ConvertToDto();
                     return Ok(productDtos);
                 }
             }
@@ -53,7 +53,7 @@ namespace ShopOnline.API.Controllers
                 else
                 {
                     var productCategory = await _productRepository.GetCategory(product.CategoryId);
-                    var productDto = product.ConvertToDto(productCategory);
+                    var productDto = product.ConvertToDto();
                     return Ok(productDto);
                 }
             }
@@ -88,7 +88,7 @@ namespace ShopOnline.API.Controllers
             {
                 var products = await _productRepository.GetItemsByCategory(categoryId);
                 var productsCategories = await _productRepository.GetCategories();
-                var productsDto = products.ConvertToDto(productsCategories);
+                var productsDto = products.ConvertToDto();
 
                 return Ok(productsDto);
             }
